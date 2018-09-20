@@ -12,7 +12,9 @@ defmodule MicroServiceWatchinator do
       :world
 
   """
-  def hello do
+  def start(_type, _args) do
     :world
+    IO.puts "HELLO...."
+    :ok
   end
 end
