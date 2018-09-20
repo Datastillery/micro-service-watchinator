@@ -1,2 +1,3 @@
-# micro-service-watchinator
-Monitors the micro services of the OS
+# MicroServiceWatchinator
+
+Watches micro-services for the Smart Columbus Operating System
