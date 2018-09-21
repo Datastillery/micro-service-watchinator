@@ -4,6 +4,7 @@ defmodule MicroServiceWatchinatorTest do
   use ExUnit.Case
 
   import Mock
+  import MockHelper
   alias StreamingMetrics.ConsoleMetricCollector, as: MetricCollector
 
   @expected_url "wss://foo.noop/socket/websocket"
@@ -21,36 +22,50 @@ defmodule MicroServiceWatchinatorTest do
          end
        ]}
     ]) do
-      assert MicroServiceWatchinator.ConsumerWebsocketCheck.start_link(%{}) == {:ok, "It worked"}
+      assert MicroServiceWatchinator.ConsumerWebsocketCheck.do_check() == {:ok, "It worked"}
     end
   end
 
-  # test "Submits the response metric to cloudwatch" do
-  #   with_mocks([
-  #     {WebSockex, [],
-  #      [
-  #        start_link: fn _url, _module, _params, _options ->
-  #          {:ok, "It worked"}
-  #       end
-  #      ]},
-  #     {MetricCollector, [:passthrough],
-  #      [
-  #        record_metrics: fn _metrics, "Socket Connection" ->
-  #          {:ok, %{}}
-  #        end
-  #      ]
-  #     }
-  #   ]) do
-  #     assert MicroServiceWatchinator.ConsumerWebsocketCheck.start_link(%{}) == {:ok, "It worked"}
+  test "Submits the response metric to cloudwatch" do
+    with_mocks([
+      {WebSockex, [],
+       [
+         start_link: fn _url, _module, _params, _options ->
+           {:ok, "It worked"}
+         end
+       ]},
+      {MetricCollector, [:passthrough],
+       [
+         record_metrics: fn [
+                              %{
+                                dimensions: [{"Application Name", "Cota-Streaming-Consumer"}],
+                                metric_name: "Opened",
+                                timestamp: _,
+                                unit: "Count",
+                                value: 1
+                              }
+                            ],
+                            "Socket Connection" ->
+           {:ok, %{}}
+         end
+       ]}
+    ]) do
+      assert MicroServiceWatchinator.ConsumerWebsocketCheck.do_check() == {:ok, "It worked"}
 
-  #     assert called(
-  #       MetricCollector.(
-  #         "wss://foo.noop/socket/websocket",
-  #         MicroServiceWatchinator.ConsumerWebsocketCheck,
-  #         %{},
-  #         [{:async, false}]
-  #       )
-  #     )
-  #   end
-  # end
+      assert called_times(1, MetricCollector.record_metrics(:_, "Socket Connection"))
+    end
+  end
+
+  test "error gets handled" do
+    with_mocks([
+      {WebSockex, [],
+       [
+         start_link: fn @expected_url, _module, _params, [{:async, false}] ->
+           {:error, "It blew up"}
+         end
+       ]}
+    ]) do
+      assert MicroServiceWatchinator.ConsumerWebsocketCheck.do_check() == {:ok, "It blew up"}
+    end
+  end
 end
