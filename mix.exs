@@ -7,7 +7,8 @@ defmodule MicroServiceWatchinator.MixProject do
       version: "0.1.0",
       elixir: "~> 1.6",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      aliases: aliases()
     ]
   end
 
@@ -15,8 +16,13 @@ defmodule MicroServiceWatchinator.MixProject do
   def application do
     [
       applications: [:websockex],
-      mod: {MicroServiceWatchinator.Application, []},
-      # extra_applications: [:logger]
+      mod: {MicroServiceWatchinator.Application, []}
+    ]
+  end
+
+  defp aliases do
+    [
+      test: "test --no-start"
     ]
   end
 
@@ -25,6 +31,8 @@ defmodule MicroServiceWatchinator.MixProject do
     [
       {:websockex, "~> 0.4.0"},
       {:streaming_metrics, git: "git@github.com:SmartColumbusOS/streaming-metrics", tag: "1.0.0"},
+      {:mix_test_watch, "~> 0.6.0", only: :dev, runtime: false},
+      {:mock, "~> 0.3.1", only: :test, runtime: false},
       {:cachex, "~> 3.0"}
     ]
   end
