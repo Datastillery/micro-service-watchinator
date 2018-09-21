@@ -5,7 +5,8 @@ defmodule MicroServiceWatchinator.Application do
     children = [
       MicroServiceWatchinator.ConsumerWebsocketCheck
     ]
-    Supervisor.start_link(children, strategy: :one_for_one)
+    Enum.each(children, fn me -> me.do_check() end)
+    {:ok, self()}
   end
 
 end
