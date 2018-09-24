@@ -1,7 +1,10 @@
+import Logger
+
 defmodule MicroServiceWatchinator.Application do
   use Application
 
   def start(_type, _args) do
+    Logger.info("Starting checks")
     children = [
       MicroServiceWatchinator.ConsumerWebsocketCheck
     ]

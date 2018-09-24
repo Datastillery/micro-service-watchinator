@@ -1,0 +1,19 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: watchinator
+  namespace: {{.Values.namespace.name}}
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: watchinator
+            image: micro-service-watchinator
+            imagePullPolicy: Never
+            env:
+            - name: CONSUMER_URI
+              value: {{.Values.cronjob.consumerUri}}
