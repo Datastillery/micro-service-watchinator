@@ -1,20 +1,14 @@
 library(
-identifier:'pipeline-lib@4.2.0',
-retriever:modernSCM([$class:'GitSCMSource',
-remote:'https://github.com/SmartColumbusOS/pipeline-lib',
-credentialsId:'jenkins-github-user'])
+    identifier:'pipeline-lib@4.2.0',
+    retriever:modernSCM([$class:'GitSCMSource',
+    remote:'https://github.com/SmartColumbusOS/pipeline-lib',
+    credentialsId:'jenkins-github-user'])
 )
 
-def environments = params.environmentsParameter.trim().split("\n").collect {environment -  >
-environment.trim()
-}
-
-def terraformOverrides = params.findAll {key, value -  > key != "environmentsParameter" && value != ""}
-
 def image, imageName
-def doStageIf = scos. & doStageIf
+def doStageIf = scos.&doStageIf
 def doStageIfRelease = doStageIf.curry(scos.isRelease(env.BRANCH_NAME))
-def doStageUnlessRelease = doStageIf.curry( ! scos.isRelease(env.BRANCH_NAME))
+def doStageUnlessRelease = doStageIf.curry(!scos.isRelease(env.BRANCH_NAME))
 def doStageIfPromoted = doStageIf.curry(env.BRANCH_NAME == 'master')
 
 node('infrastructure') {
