@@ -1,5 +1,5 @@
 library(
-    identifier:'pipeline-lib@4.2.0',
+    identifier:'pipeline-lib@4.3.0',
     retriever:modernSCM([$class:'GitSCMSource',
     remote:'https://github.com/SmartColumbusOS/pipeline-lib',
     credentialsId:'jenkins-github-user'])
@@ -7,9 +7,10 @@ library(
 
 def image, imageName
 def doStageIf = scos.&doStageIf
-def doStageIfRelease = doStageIf.curry(scos.isRelease(env.BRANCH_NAME))
-def doStageUnlessRelease = doStageIf.curry(!scos.isRelease(env.BRANCH_NAME))
-def doStageIfPromoted = doStageIf.curry(env.BRANCH_NAME == 'master')
+def doStageIfRelease = doStageIf.curry(scos.changeset.isRelease)
+def doStageUnlessRelease = doStageIf.curry(!scos.changeset.isRelease)
+def doStageIfPromoted = doStageIf.curry(scos.changeset.isMaster)
+
 
 node('infrastructure') {
     ansiColor('xterm') {
