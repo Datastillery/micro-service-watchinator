@@ -20,7 +20,7 @@ resource "local_file" "helm_vars" {
   filename = "${path.module}/outputs/${terraform.workspace}.yaml"
   content = <<EOF
 cronjob:
-  consumerUri: wss://streaming.${data.terraform_remote_state.env_remote_state.hosted_zone_name}/socket/websocket
+  consumerUri: wss://streaming.${data.terraform_remote_state.env_remote_state.dns_zone_name}/socket/websocket
   image: ${var.watchinator_image_name}
 EOF
 }
