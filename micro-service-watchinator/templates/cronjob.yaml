@@ -12,7 +12,6 @@ spec:
           containers:
           - name: watchinator
             image: {{.Values.cronjob.image}}
-            imagePullPolicy: Never
             env:
             - name: CONSUMER_URI
               value: {{.Values.cronjob.consumerUri}}
