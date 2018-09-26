@@ -70,7 +70,7 @@ node('infrastructure') {
 
 def deployTo(enviornment) {
     def extraVars = [
-        'watchinator_image_name': "${org.scos.pipeline.ECRepository.hostname()}/${imageName}"
+        'watchinator_image_name': "${scos.ecrHostname}/${imageName}"
     ]
 
     def terraform = scos.terraform(enviornment)
