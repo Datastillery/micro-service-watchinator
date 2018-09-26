@@ -9,6 +9,7 @@ RUN mix local.hex --force && \
 
 FROM elixir:1.7.2
 ENV CONSUMER_URI=wss://streaming.smartcolumbusos.com/socket/websocket
+ENV MIX_ENV="prod"
 COPY . /app
 WORKDIR /app
 RUN mix local.hex --force && \
