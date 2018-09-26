@@ -34,3 +34,5 @@ config :ex_aws,
 
 config :streaming_metrics,
   collector: StreamingMetrics.ConsoleMetricCollector
+
+import_config "#{Mix.env()}.exs"
