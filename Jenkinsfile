@@ -35,13 +35,13 @@ node('infrastructure') {
                 image.push()
                 image.push('latest')
             }
-            deployTo('dev')
+            deployTo('dev', imageName)
         }
 
         doStageIfPromoted('Deploy to Staging')  {
             def promotionTag = scos.releaseCandidateNumber()
 
-            deployTo('staging')
+            deployTo('staging', imageName)
 
             scos.applyAndPushGitHubTag(promotionTag)
 
@@ -54,7 +54,7 @@ node('infrastructure') {
             def releaseTag = env.BRANCH_NAME
             def promotionTag = 'prod'
 
-            deployTo('prod')
+            deployTo('prod', imageName)
 
             scos.applyAndPushGitHubTag(promotionTag)
 
@@ -68,7 +68,7 @@ node('infrastructure') {
 }
 
 
-def deployTo(enviornment) {
+def deployTo(enviornment, imageName) {
     def extraVars = [
         'watchinator_image_name': "${scos.ecrHostname}/${imageName}"
     ]
