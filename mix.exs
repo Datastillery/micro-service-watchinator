@@ -15,7 +15,7 @@ defmodule MicroServiceWatchinator.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      applications: [:websockex],
+      applications: [:websockex, :ex_aws],
       mod: {MicroServiceWatchinator.Application, []},
       extra_applications: [:logger]
     ]
