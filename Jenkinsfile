@@ -15,6 +15,12 @@ def doStageIfPromoted = doStageIf.curry(scos.changeset.isMaster)
 node('infrastructure') {
     ansiColor('xterm') {
         scos.doCheckoutStage()
+        stage("Checkout submodules") {
+            sshagent(credentials: ["GitHub"]) {
+                sh("GIT_SSH_COMMAND='ssh -o StrictHostKeyChecking=no' git submodule update --init --recursive")
+            }
+        }
+
         def SERVICE_NAME="micro-service-watchinator"
         imageName = "scos/${SERVICE_NAME}:${env.GIT_COMMIT_HASH}"
 
@@ -24,40 +30,38 @@ node('infrastructure') {
             println image.getClass()
         }
 
-        dir('micro-service-watchinator') {
-            doStageUnlessRelease('Deploy to Dev') {
-                scos.withDockerRegistry {
-                    image.push()
-                    image.push('latest')
-                }
-                deployTo('dev')
+        doStageUnlessRelease('Deploy to Dev') {
+            scos.withDockerRegistry {
+                image.push()
+                image.push('latest')
             }
+            deployTo('dev')
+        }
 
-            doStageIfPromoted('Deploy to Staging')  {
-                def promotionTag = scos.releaseCandidateNumber()
+        doStageIfPromoted('Deploy to Staging')  {
+            def promotionTag = scos.releaseCandidateNumber()
 
-                deployTo('staging')
+            deployTo('staging')
 
-                scos.applyAndPushGitHubTag(promotionTag)
+            scos.applyAndPushGitHubTag(promotionTag)
 
-                scos.withDockerRegistry {
-                    image.push(promotionTag)
-                }
+            scos.withDockerRegistry {
+                image.push(promotionTag)
             }
+        }
 
-            doStageIfRelease('Deploy to Production') {
-                def releaseTag = env.BRANCH_NAME
-                def promotionTag = 'prod'
+        doStageIfRelease('Deploy to Production') {
+            def releaseTag = env.BRANCH_NAME
+            def promotionTag = 'prod'
 
-                deployTo('prod')
+            deployTo('prod')
 
-                scos.applyAndPushGitHubTag(promotionTag)
+            scos.applyAndPushGitHubTag(promotionTag)
 
-                scos.withDockerRegistry {
-                    image = scos.pullImageFromDockerRegistry("scos/${SERVICE_NAME}", env.GIT_COMMIT_HASH)
-                    image.push(releaseTag)
-                    image.push(promotionTag)
-                }
+            scos.withDockerRegistry {
+                image = scos.pullImageFromDockerRegistry("scos/${SERVICE_NAME}", env.GIT_COMMIT_HASH)
+                image.push(releaseTag)
+                image.push(promotionTag)
             }
         }
     }
@@ -65,12 +69,12 @@ node('infrastructure') {
 
 
 def deployTo(enviornment) {
-    def extraArgs = [
+    def extraVars = [
         'watchinator_image_name': "${org.scos.pipeline.ECRepository.hostname()}/${imageName}"
     ]
 
     def terraform = scos.terraform(enviornment)
     sh "terraform init"
-    terraform.plan(terraform.defaultVarFile, extraArgs)
+    terraform.plan(terraform.defaultVarFile, extraVars)
     terraform.apply()
 }

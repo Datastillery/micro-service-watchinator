@@ -1,4 +1,4 @@
-import Logger
+require Logger
 
 defmodule MicroServiceWatchinator.Application do
   use Application

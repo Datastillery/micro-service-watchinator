@@ -2,6 +2,5 @@ cronjob:
   # The websocket connect URI for the service being watchinated
   # example: wss://foo.bar.com/websocket
   consumerUri:
-
-namespace:
-  name: watchinator
+  image:
+  schedule: "*/1 * * * *"
