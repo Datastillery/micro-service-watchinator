@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: watchinator
 spec:
-  schedule: {{.Values.cronjob.schedule}}
+  schedule: "{{.Values.cronjob.schedule}}"
   jobTemplate:
     spec:
       template:
