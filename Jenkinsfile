@@ -68,12 +68,12 @@ node('infrastructure') {
 }
 
 
-def deployTo(enviornment, imageName) {
+def deployTo(environment, imageName) {
     def extraVars = [
         'watchinator_image_name': "${scos.ecrHostname}/${imageName}"
     ]
 
-    def terraform = scos.terraform(enviornment)
+    def terraform = scos.terraform(environment)
     sh "terraform init && terraform workspace new ${environment}"
     terraform.plan(terraform.defaultVarFile, extraVars)
     terraform.apply()
