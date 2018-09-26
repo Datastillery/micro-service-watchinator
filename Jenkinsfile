@@ -74,7 +74,7 @@ def deployTo(enviornment, imageName) {
     ]
 
     def terraform = scos.terraform(enviornment)
-    sh "terraform init"
+    sh "terraform init && terraform workspace new ${environment}"
     terraform.plan(terraform.defaultVarFile, extraVars)
     terraform.apply()
 }
