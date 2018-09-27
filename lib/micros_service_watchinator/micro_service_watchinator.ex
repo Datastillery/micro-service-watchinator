@@ -1,4 +1,5 @@
 require Logger
+require StreamingMetrics.AwsMetricCollector
 
 defmodule MicroServiceWatchinator.ConsumerWebsocketCheck do
 
