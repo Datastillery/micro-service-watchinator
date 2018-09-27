@@ -17,7 +17,7 @@ defmodule MicroServiceWatchinator.MixProject do
     [
       applications: [:websockex],
       mod: {MicroServiceWatchinator.Application, []},
-      extra_applications: [:logger]
+      extra_applications: [:logger, :ex_aws, :hackney]
     ]
   end
 
