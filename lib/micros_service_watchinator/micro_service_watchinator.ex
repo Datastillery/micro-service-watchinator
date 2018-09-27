@@ -11,7 +11,7 @@ defmodule MicroServiceWatchinator.ConsumerWebsocketCheck do
     case WebSockex.start_link(System.get_env("CONSUMER_URI"), __MODULE__, %{}, async: false) do
       {:ok, data} ->
         Logger.info("Successfully Made Socket Connection")
-        @metric_collector.count_metric(1, "Opened", [{"Application Name", "Cota-Streaming-Consumer"}])
+        @metric_collector.count_metric(1, "Opened", [{"ApplicationName", "Cota-Streaming-Consumer"}])
         |> List.wrap()
         |> @metric_collector.record_metrics("Socket Connection")
         {:ok, data}

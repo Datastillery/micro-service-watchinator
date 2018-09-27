@@ -38,7 +38,7 @@ defmodule MicroServiceWatchinatorTest do
        [
          record_metrics: fn [
                               %{
-                                dimensions: [{"Application Name", "Cota-Streaming-Consumer"}],
+                                dimensions: [{"ApplicationName", "Cota-Streaming-Consumer"}],
                                 metric_name: "Opened",
                                 timestamp: _,
                                 unit: "Count",
