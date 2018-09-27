@@ -4,3 +4,5 @@ cronjob:
   consumerUri:
   image:
   schedule: "*/1 * * * *"
+
+namespace: watchinator

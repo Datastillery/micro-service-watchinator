@@ -32,7 +32,6 @@ resource "null_resource" "helm_deploy" {
 export KUBECONFIG=${local_file.kubeconfig.filename}
 
 helm upgrade --install ${var.watchinator_deploy_name} micro-service-watchinator/ \
-    --namespace watchinator \
     --values ${local_file.helm_vars.filename}
 EOF
   }
