@@ -33,7 +33,8 @@ defmodule MicroServiceWatchinator.MixProject do
       {:websockex, "~> 0.4.0"},
       {:streaming_metrics, path: "streaming_metrics"},
       {:mock, "~> 0.3.1", only: :test, runtime: false},
-      {:cachex, "~> 3.0"}
+      {:cachex, "~> 3.0"},
+      {:poison, "~> 4.0"}
     ]
   end
 end
