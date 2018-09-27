@@ -7,3 +7,7 @@ erl_crash.dump
 *.ez
 *.beam
 /config/*.secret.exs
+*.tfstate*
+.terraform/
+outputs/
+.elixir_ls/
