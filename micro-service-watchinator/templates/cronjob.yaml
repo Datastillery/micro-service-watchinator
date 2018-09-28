@@ -13,6 +13,8 @@ spec:
           containers:
           - name: watchinator
             image: {{.Values.cronjob.image}}
+            resources:
+{{ include "watchinator.resources" . | trim | indent 14 }}
             env:
             - name: CONSUMER_URI
               value: {{.Values.cronjob.consumerUri}}
