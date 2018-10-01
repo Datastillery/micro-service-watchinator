@@ -1,3 +1,7 @@
+resourceLimits:
+  cpu: 10m
+  memory: 128Mi
+
 cronjob:
   # The websocket connect URI for the service being watchinated
   # example: wss://foo.bar.com/websocket
