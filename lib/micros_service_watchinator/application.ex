@@ -1,6 +1,7 @@
 require Logger
 
 defmodule MicroServiceWatchinator.Application do
+  @moduledoc false
   use Application
 
   def start(_type, _args) do

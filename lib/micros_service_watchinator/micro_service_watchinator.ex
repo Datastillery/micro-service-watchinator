@@ -2,6 +2,9 @@ require Logger
 require StreamingMetrics.AwsMetricCollector
 
 defmodule MicroServiceWatchinator.ConsumerWebsocketCheck do
+  @moduledoc """
+  This module connects to a consumer URI and sends connection metrics to be aggregated.
+  """
 
   use WebSockex
   @metric_collector Application.get_env(:streaming_metrics, :collector)
@@ -11,9 +14,12 @@ defmodule MicroServiceWatchinator.ConsumerWebsocketCheck do
     case WebSockex.start_link(System.get_env("CONSUMER_URI"), __MODULE__, %{}, async: false) do
       {:ok, data} ->
         Logger.info("Successfully Made Socket Connection")
-        @metric_collector.count_metric(1, "Opened", [{"ApplicationName", "Cota-Streaming-Consumer"}])
+
+        1
+        |> @metric_collector.count_metric("Opened", [{"ApplicationName", "Cota-Streaming-Consumer"}])
         |> List.wrap()
         |> @metric_collector.record_metrics("Socket Connection")
+
         {:ok, data}
       {:error, err} ->
         Logger.warn("Failed to make a socket connection")
