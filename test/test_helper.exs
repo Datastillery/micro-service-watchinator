@@ -1,4 +1,5 @@
 ExUnit.start()
+Placebo.Application.start(nil, nil)
 
 defmodule MockHelper do
   defmacro called_times(times, {{:., _, [module, f]}, _, args}) do
