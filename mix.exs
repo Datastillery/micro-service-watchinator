@@ -36,7 +36,8 @@ defmodule MicroServiceWatchinator.MixProject do
       {:cachex, "~> 3.0"},
       {:poison, "~> 4.0"},
       {:credo, "~> 0.10", only: [:dev, :test], runtime: false},
-      {:placebo, "~> 0.2", only: [:dev, :test]}
+      {:placebo, "~> 0.2", only: [:dev, :test]},
+      {:distillery, "~> 2.0"}
     ]
   end
 end
