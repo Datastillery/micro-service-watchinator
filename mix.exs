@@ -34,7 +34,9 @@ defmodule MicroServiceWatchinator.MixProject do
       {:streaming_metrics, path: "streaming_metrics"},
       {:mock, "~> 0.3.1", only: :test, runtime: false},
       {:cachex, "~> 3.0"},
-      {:poison, "~> 4.0"}
+      {:poison, "~> 4.0"},
+      {:credo, "~> 0.10", only: [:dev, :test], runtime: false},
+      {:placebo, "~> 0.2", only: [:dev, :test]}
     ]
   end
 end

@@ -2,9 +2,7 @@ ExUnit.start()
 
 defmodule MicroServiceWatchinatorTest do
   use ExUnit.Case
-
-  import Mock
-  import MockHelper
+  use Placebo
   alias StreamingMetrics.ConsoleMetricCollector, as: MetricCollector
 
   @expected_url "wss://foo.noop/socket/websocket"
@@ -14,58 +12,34 @@ defmodule MicroServiceWatchinatorTest do
   end
 
   test "initiates websocket request" do
-    with_mocks([
-      {WebSockex, [],
-       [
-         start_link: fn @expected_url, _module, _params, [{:async, false}] ->
-           {:ok, "It worked"}
-         end
-       ]}
-    ]) do
+      allow WebSockex.start_link(@expected_url, any(), any(), [{:async, false}]),
+        return: {:ok, "It worked"}
+
       assert MicroServiceWatchinator.ConsumerWebsocketCheck.do_check() == {:ok, "It worked"}
-    end
   end
 
   test "Submits the response metric to cloudwatch" do
-    with_mocks([
-      {WebSockex, [],
-       [
-         start_link: fn _url, _module, _params, _options ->
-           {:ok, "It worked"}
-         end
-       ]},
-      {MetricCollector, [:passthrough],
-       [
-         record_metrics: fn [
-                              %{
-                                dimensions: [{"ApplicationName", "Cota-Streaming-Consumer"}],
-                                metric_name: "Opened",
-                                timestamp: _,
-                                unit: "Count",
-                                value: 1
-                              }
-                            ],
-                            "Socket Connection" ->
-           {:ok, %{}}
-         end
-       ]}
-    ]) do
-      assert MicroServiceWatchinator.ConsumerWebsocketCheck.do_check() == {:ok, "It worked"}
+    metric_map = %{
+      dimensions: [{"ApplicationName", "Cota-Streaming-Consumer"}],
+      metric_name: "Opened",
+      timestamp: any(),
+      unit: "Count",
+      value: 1
+    }
 
-      assert called_times(1, MetricCollector.record_metrics(:_, "Socket Connection"))
-    end
+    allow WebSockex.start_link(any(), any(), any(), any()),
+      return: {:ok, "It worked"}
+    allow MetricCollector.count_metric(1, "Opened", [{"ApplicationName", "Cota-Streaming-Consumer"}]),
+      return: metric_map
+    expect MetricCollector.record_metrics([metric_map], "Socket Connection"),
+      return: {:ok, %{}}
+
+      assert MicroServiceWatchinator.ConsumerWebsocketCheck.do_check() == {:ok, "It worked"}
   end
 
   test "error gets handled" do
-    with_mocks([
-      {WebSockex, [],
-       [
-         start_link: fn @expected_url, _module, _params, [{:async, false}] ->
-           {:error, "It blew up"}
-         end
-       ]}
-    ]) do
-      assert MicroServiceWatchinator.ConsumerWebsocketCheck.do_check() == {:ok, "It blew up"}
-    end
+    allow WebSockex.start_link(@expected_url, any(), any(), [{:async, false}]),
+      return: {:error, "It blew up"}
+    assert MicroServiceWatchinator.ConsumerWebsocketCheck.do_check() == {:ok, "It blew up"}
   end
 end

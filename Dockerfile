@@ -5,7 +5,8 @@ WORKDIR /app
 RUN mix local.hex --force && \
     mix local.rebar --force && \
     mix deps.get && \
-    mix test
+    mix test && \
+    mix credo
 
 FROM elixir:1.7.2
 ENV CONSUMER_URI=wss://streaming.smartcolumbusos.com/socket/websocket
