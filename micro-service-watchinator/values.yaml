@@ -1,5 +1,5 @@
 resourceLimits:
-  cpu: 10m
+  cpu: 100m
   memory: 128Mi
 
 cronjob:
