@@ -15,9 +15,8 @@ defmodule MicroServiceWatchinator.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      applications: [:websockex],
       mod: {MicroServiceWatchinator.Application, []},
-      extra_applications: [:logger, :ex_aws, :httpoison]
+      extra_applications: [:logger]
     ]
   end
 
@@ -32,11 +31,11 @@ defmodule MicroServiceWatchinator.MixProject do
     [
       {:websockex, "~> 0.4.0"},
       {:streaming_metrics, path: "streaming_metrics"},
-      {:mock, "~> 0.3.1", only: :test, runtime: false},
       {:cachex, "~> 3.0"},
       {:poison, "~> 4.0"},
       {:credo, "~> 0.10", only: [:dev, :test], runtime: false},
-      {:placebo, "~> 0.2", only: [:dev, :test]}
+      {:placebo, "~> 0.2", only: [:dev, :test]},
+      {:distillery, "~> 2.0"}
     ]
   end
 end
