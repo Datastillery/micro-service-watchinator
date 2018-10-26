@@ -1,5 +1,4 @@
 require Logger
-require StreamingMetrics.AwsMetricCollector
 
 defmodule MicroServiceWatchinator.ConsumerWebsocketCheck do
   @moduledoc """
@@ -8,6 +7,29 @@ defmodule MicroServiceWatchinator.ConsumerWebsocketCheck do
 
   use WebSockex
   @metric_collector Application.get_env(:streaming_metrics, :collector)
+
+  def start_link(args \\ []) do
+    GenServer.start_link(__MODULE__, args, name: __MODULE__)
+  end
+
+  def init(_args) do
+    schedule_work()
+    {:ok, nil}
+  end
+
+  defp schedule_work() do
+    Process.send_after(self(), :work, 5000)
+  end
+
+  def handle_info(:work, state) do
+    Logger.log(:warn, "Doing work boss")
+
+    do_check()
+    schedule_work()
+    noreply(state)
+  end
+
+  defp noreply(new_state), do: {:noreply, new_state}
 
   def do_check do
     Logger.info("Initiating web check against #{System.get_env("CONSUMER_URI")}")

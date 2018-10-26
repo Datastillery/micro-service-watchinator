@@ -1,0 +1,12 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ include "helm.fullname" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  template:
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
