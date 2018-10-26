@@ -22,11 +22,12 @@ node('infrastructure') {
         }
 
         def SERVICE_NAME="micro-service-watchinator"
-        imageName = "scos/${SERVICE_NAME}:${env.GIT_COMMIT_HASH}"
+        imageName = "scos/${SERVICE_NAME}"
+        imageTag = "${env.GIT_COMMIT_HASH}"
 
         doStageUnlessRelease('Build') {
 
-            image = docker.build(imageName)
+            image = docker.build("${imageName}:${imageTag}")
             println image.getClass()
         }
 
@@ -35,13 +36,13 @@ node('infrastructure') {
                 image.push()
                 image.push('latest')
             }
-            deployTo('dev', imageName)
+            deployTo('dev', imageName, imageTag)
         }
 
         doStageIfPromoted('Deploy to Staging')  {
             def promotionTag = scos.releaseCandidateNumber()
 
-            deployTo('staging', imageName)
+            deployTo('staging', imageName, imageTag)
 
             scos.applyAndPushGitHubTag(promotionTag)
 
@@ -54,7 +55,7 @@ node('infrastructure') {
             def releaseTag = env.BRANCH_NAME
             def promotionTag = 'prod'
 
-            deployTo('prod', imageName)
+            deployTo('prod', imageName, imageTag)
 
             scos.applyAndPushGitHubTag(promotionTag)
 
@@ -68,9 +69,10 @@ node('infrastructure') {
 }
 
 
-def deployTo(environment, imageName) {
+def deployTo(environment, imageName, tag) {
     def extraVars = [
-        'watchinator_image_name': "${scos.ecrHostname}/${imageName}"
+        'image_repository': "${scos.ecrHostname}/${imageName}",
+        'tag': tag
     ]
 
     def terraform = scos.terraform(environment)

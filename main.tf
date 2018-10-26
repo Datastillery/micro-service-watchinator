@@ -19,9 +19,10 @@ resource "local_file" "kubeconfig" {
 resource "local_file" "helm_vars" {
   filename = "${path.module}/outputs/${terraform.workspace}.yaml"
   content = <<EOF
-cronjob:
-  consumerUri: wss://streaming.${data.terraform_remote_state.env_remote_state.dns_zone_name}/socket/websocket
-  image: ${var.watchinator_image_name}
+CONSUMER_URI: wss://streaming.${data.terraform_remote_state.env_remote_state.dns_zone_name}/socket/websocket
+image:
+  repository: ${var.image_repository}
+  tag: ${var.tag}
 EOF
 }
 
@@ -31,7 +32,7 @@ resource "null_resource" "helm_deploy" {
     command = <<EOF
 export KUBECONFIG=${local_file.kubeconfig.filename}
 
-helm upgrade --install ${var.watchinator_deploy_name} micro-service-watchinator/ \
+helm upgrade --install --namespace=watchinator ${var.watchinator_deploy_name} chart/ \
     --values ${local_file.helm_vars.filename}
 EOF
   }
@@ -58,7 +59,12 @@ variable "watchinator_deploy_name" {
   default     = "watchinator"
 }
 
-variable "watchinator_image_name" {
-  description = "The name of the docker image to be deployed as the watchinator"
-  default     = "watchinator:latest"
+variable "image_repository" {
+  description = "The image repository"
+  default     = "199837183662.dkr.ecr.us-east-2.amazonaws.com/scos/micro-service-watchinator"
+}
+
+variable "tag" {
+  description = "The tag/version of the image to deploy"
+  default     = "latest"
 }
