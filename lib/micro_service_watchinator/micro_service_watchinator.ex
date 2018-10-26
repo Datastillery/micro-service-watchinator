@@ -18,7 +18,7 @@ defmodule MicroServiceWatchinator.ConsumerWebsocketCheck do
   end
 
   defp schedule_work() do
-    Process.send_after(self(), :work, 60000)
+    Process.send_after(self(), :work, 60_000)
   end
 
   def handle_info(:work, state) do
