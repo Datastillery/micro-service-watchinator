@@ -32,7 +32,7 @@ resource "null_resource" "helm_deploy" {
     command = <<EOF
 export KUBECONFIG=${local_file.kubeconfig.filename}
 
-helm upgrade --install ${var.watchinator_deploy_name} chart/ \
+helm upgrade --install --namespace=watchinator ${var.watchinator_deploy_name} chart/ \
     --values ${local_file.helm_vars.filename}
 EOF
   }

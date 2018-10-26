@@ -18,12 +18,10 @@ defmodule MicroServiceWatchinator.ConsumerWebsocketCheck do
   end
 
   defp schedule_work() do
-    Process.send_after(self(), :work, 5000)
+    Process.send_after(self(), :work, 60000)
   end
 
   def handle_info(:work, state) do
-    Logger.log(:warn, "Doing work boss")
-
     do_check()
     schedule_work()
     noreply(state)
