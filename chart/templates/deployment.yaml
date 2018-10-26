@@ -5,6 +5,9 @@ metadata:
 spec:
   replicas: {{ .Values.replicaCount }}
   template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
     spec:
       containers:
         - name: {{ .Chart.Name }}
