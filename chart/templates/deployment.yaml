@@ -16,3 +16,6 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          - name: CONSUMER_URI
+            value: {{ .Values.CONSUMER_URI }}

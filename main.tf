@@ -19,7 +19,7 @@ resource "local_file" "kubeconfig" {
 resource "local_file" "helm_vars" {
   filename = "${path.module}/outputs/${terraform.workspace}.yaml"
   content = <<EOF
-consumerUri: wss://streaming.${data.terraform_remote_state.env_remote_state.dns_zone_name}/socket/websocket
+CONSUMER_URI: wss://streaming.${data.terraform_remote_state.env_remote_state.dns_zone_name}/socket/websocket
 image:
   repository: ${var.image_repository}
   tag: ${var.tag}

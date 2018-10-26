@@ -13,6 +13,7 @@ defmodule MicroServiceWatchinator.ConsumerWebsocketCheck do
   end
 
   def init(_args) do
+    do_check()
     schedule_work()
     {:ok, nil}
   end
