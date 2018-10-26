@@ -1,6 +1,6 @@
 resourceLimits:
-  cpu: 100m
-  memory: 128Mi
+  cpu: 1000m
+  memory: 512Mi
 
 cronjob:
   # The websocket connect URI for the service being watchinated
