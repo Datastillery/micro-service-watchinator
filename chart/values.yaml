@@ -8,4 +8,4 @@ namespace: watchinator
 image:
   repository: 199837183662.dkr.ecr.us-east-2.amazonaws.com/scos/micro-service-watchinator
   tag: latest
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
