@@ -22,7 +22,8 @@ defmodule MicroServiceWatchinator.MixProject do
 
   defp aliases do
     [
-      test: "test --no-start"
+      test: "test --no-start",
+      lint: ["format", "credo"]
     ]
   end
 
@@ -36,7 +37,9 @@ defmodule MicroServiceWatchinator.MixProject do
       {:poison, "~> 4.0"},
       {:credo, "~> 0.10", only: [:dev, :test], runtime: false},
       {:placebo, "~> 0.2", only: [:dev, :test]},
-      {:distillery, "~> 2.0"}
+      {:distillery, "~> 2.0"},
+      {:plug_cowboy, "~> 2.0"},
+      {:prometheus_plugs, "~> 1.1.1"}
     ]
   end
 end
