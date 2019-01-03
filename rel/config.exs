@@ -23,7 +23,7 @@ use Mix.Releases.Config,
 # and environment configuration is called a profile
 
 environment :prod do
-  set include_erts: false
+  set include_erts: true
   set include_src: false
   set cookie: :"pmd9<D<35rk/_SIy%($%Bd6%B$CMwaoNF`YFS,5P8_^N?JcEQLmutGQXE?r/x7Kt"
 end
