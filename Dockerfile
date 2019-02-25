@@ -1,23 +1,24 @@
 FROM bitwalker/alpine-elixir:1.7.2 as builder
 ENV MIX_ENV test
-RUN apk update \
-    && apk add --no-cache alpine-sdk \
-    && rm -rf /var/cache/**/*
+RUN apk update && \
+    apk add --no-cache alpine-sdk && \
+    rm -rf /var/cache/**/*
 COPY . /app
 WORKDIR /app
 RUN mix local.hex --force && \
     mix local.rebar --force && \
     mix deps.get && \
-    mix test && \
-    mix credo
+    mix format --check-formatted && \
+    mix credo && \
+    mix test
 RUN MIX_ENV=prod mix release
 
 FROM alpine:3.8
 ENV CONSUMER_URI=wss://streaming.smartcolumbusos.com/socket/websocket
 ENV MIX_ENV="prod"
-RUN apk update \
-    && apk add --no-cache bash openssl \
-    && rm -rf /var/cache/**/*
+RUN apk update && \
+    apk add --no-cache bash openssl && \
+    rm -rf /var/cache/**/*
 WORKDIR /app
 COPY --from=builder /app/_build/prod/rel/micro_service_watchinator/ .
 ENV PORT 80
