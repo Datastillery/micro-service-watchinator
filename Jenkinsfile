@@ -40,14 +40,14 @@ node('infrastructure') {
         }
 
         doStageIfPromoted('Deploy to Staging')  {
-            def promotionTag = scos.releaseCandidateNumber()
+            def environment = 'staging'
 
-            deployTo('staging', imageName, imageTag)
+            deployTo(environment, imageName, imageTag)
 
-            scos.applyAndPushGitHubTag(promotionTag)
+            scos.applyAndPushGitHubTag(environment)
 
             scos.withDockerRegistry {
-                image.push(promotionTag)
+                image.push(environment)
             }
         }
 
