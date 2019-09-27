@@ -31,8 +31,8 @@ defmodule MicroServiceWatchinator.MixProject do
   defp deps do
     [
       {:websockex, "~> 0.4.0"},
-      {:streaming_metrics, path: "streaming_metrics"},
-      {:httpoison, "~> 0.11.1"},
+      {:streaming_metrics, "~> 2.2.0"},
+      {:httpoison, "~> 1.5.0"},
       {:cachex, "~> 3.0"},
       {:poison, "~> 4.0"},
       {:credo, "~> 0.10", only: [:dev, :test], runtime: false},
