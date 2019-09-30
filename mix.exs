@@ -5,7 +5,7 @@ defmodule MicroServiceWatchinator.MixProject do
     [
       app: :micro_service_watchinator,
       version: "1.0.0",
-      elixir: "~> 1.9.1",
+      elixir: "~> 1.8.1",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       aliases: aliases()
@@ -36,7 +36,7 @@ defmodule MicroServiceWatchinator.MixProject do
       {:cachex, "~> 3.0"},
       {:poison, "~> 4.0"},
       {:credo, "~> 0.10", only: [:dev, :test], runtime: false},
-      {:placebo, "~> 0.2", only: [:dev, :test]},
+      {:placebo, "~> 1.2", only: [:dev, :test]},
       {:distillery, "~> 2.0"},
       {:plug_cowboy, "~> 2.0"},
       {:prometheus_plugs, "~> 1.1.1"}
