@@ -17,10 +17,6 @@ install:
   - mix local.hex --force
   - mix deps.get
 script:
-  - mix format --check-formatted
-  - mix credo
-  - mix hex.outdated || true
-  - mix test
   - docker build -t micro-service-watchinator:build .
 deploy:
   - provider: script
