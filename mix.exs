@@ -32,12 +32,12 @@ defmodule MicroServiceWatchinator.MixProject do
     [
       {:websockex, "~> 0.4.0"},
       {:streaming_metrics, "~> 2.2.0"},
-      {:httpoison, "~> 1.5.0"},
+      {:httpoison, "~> 1.6.0"},
       {:cachex, "~> 3.0"},
       {:poison, "~> 4.0"},
       {:credo, "~> 0.10", only: [:dev, :test], runtime: false},
       {:placebo, "~> 1.2", only: [:dev, :test]},
-      {:distillery, "~> 2.0"},
+      {:distillery, "~> 2.0.14"},
       {:plug_cowboy, "~> 2.0"},
       {:prometheus_plugs, "~> 1.1.1"}
     ]
