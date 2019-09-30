@@ -14,7 +14,7 @@ RUN mix local.hex --force && \
     mix test
 RUN MIX_ENV=prod mix release
 
-FROM alpine:3.8
+FROM alpine:3.9
 ENV CONSUMER_URI=wss://streams.smartcolumbusos.com/socket/websocket
 ENV MIX_ENV="prod"
 RUN apk update && \
