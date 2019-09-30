@@ -21,7 +21,6 @@ script:
   - mix credo
   - mix hex.outdated || true
   - mix test
-  - mix test.integration
   - docker build -t micro-service-watchinator:build .
 deploy:
   - provider: script

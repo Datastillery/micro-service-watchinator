@@ -1,6 +1,7 @@
-FROM bitwalker/alpine-elixir:1.7.2 as builder
+FROM bitwalker/alpine-elixir:1.8.1 as builder
 ENV MIX_ENV test
 RUN apk update && \
+    apk --no-cache --update upgrade apline-sdk && \
     apk add --no-cache alpine-sdk && \
     rm -rf /var/cache/**/*
 COPY . /app
