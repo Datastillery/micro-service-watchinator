@@ -5,7 +5,7 @@ defmodule MicroServiceWatchinator.MixProject do
     [
       app: :micro_service_watchinator,
       version: "1.0.0",
-      elixir: "~> 1.8.1",
+      elixir: "~> 1.8",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       aliases: aliases()
