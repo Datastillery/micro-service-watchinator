@@ -12,7 +12,11 @@ defmodule MicroServiceWatchinatorTest do
   end
 
   test "initiates websocket request" do
-    allow(WebSockex.start_link(@expected_url, any(), any(), [{:async, false}]),
+    allow(
+      WebSockex.start_link(@expected_url, any(), any(), [
+        {:async, false},
+        {:extra_headers, [{"User-Agent", "watchinator"}]}
+      ]),
       return: {:ok, "It worked"}
     )
 
@@ -45,7 +49,11 @@ defmodule MicroServiceWatchinatorTest do
   end
 
   test "error gets handled" do
-    allow(WebSockex.start_link(@expected_url, any(), any(), [{:async, false}]),
+    allow(
+      WebSockex.start_link(@expected_url, any(), any(), [
+        {:async, false},
+        {:extra_headers, [{"User-Agent", "watchinator"}]}
+      ]),
       return: {:error, "It blew up"}
     )
 
