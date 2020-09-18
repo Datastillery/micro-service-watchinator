@@ -33,7 +33,10 @@ defmodule MicroServiceWatchinator.ConsumerWebsocketCheck do
   def do_check do
     Logger.info("Initiating web check against #{System.get_env("CONSUMER_URI")}")
 
-    case WebSockex.start_link(System.get_env("CONSUMER_URI"), __MODULE__, %{}, async: false, extra_headers: [{"User-Agent", "watchinator"}] ) do
+    case WebSockex.start_link(System.get_env("CONSUMER_URI"), __MODULE__, %{},
+           async: false,
+           extra_headers: [{"User-Agent", "watchinator"}]
+         ) do
       {:ok, data} ->
         Logger.info("Successfully Made Socket Connection")
 
